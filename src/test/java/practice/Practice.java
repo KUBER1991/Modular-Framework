@@ -68,7 +68,16 @@ public class Practice {
 		
 		
 		
-		
+		/*if(String.valueOf(l1.get(i).charAt(0)).equals("6")) {*/
+		if(l1.get(i).startsWith("6")) {
+			Count=Count+1;
+			
+		}
+	}
+	
+}
+
+System.out.println(Count);		
 		
 		
 		
