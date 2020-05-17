@@ -1,4 +1,4 @@
-package practice;
+/*package practice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ public class Practice {
 	// count array value counts
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-         /* String []arr={"kuber", "kuber","kju","st","st"};
+          String []arr={"kuber", "kuber","kju","st","st"};
 		
           HashMap <String, Integer> map= new HashMap<>();
           
@@ -24,10 +24,10 @@ public class Practice {
 			map.put(arr[i],1);
 		}}
         	System.out.println(map);
-		*/
+		
 	
 		
-/*		String sti="kuberjayswal";
+		String sti="kuberjayswal";
         int s=3;
         ArrayList<String>al = new ArrayList<>();
    if((sti.length()%s)!=0) {
@@ -44,7 +44,7 @@ public class Practice {
 
    System.out.println(al); 	 
      
-	}	*/
+	}	
 		
 		String []arg= {"1234", "6004","123","6745"};
 		
@@ -53,7 +53,7 @@ public class Practice {
 		for(int i=0;i<l1.size();i++){
 			if(l1.get(i).length()==4) {
 				
-				/*if(String.valueOf(l1.get(i).charAt(0)).equals("6")) {*/
+				if(String.valueOf(l1.get(i).charAt(0)).equals("6")) {
 				if(l1.get(i).startsWith("6")) {
 					Count=Count+1;
 					
@@ -68,7 +68,7 @@ public class Practice {
 		
 		
 		
-		/*if(String.valueOf(l1.get(i).charAt(0)).equals("6")) {*/
+		if(String.valueOf(l1.get(i).charAt(0)).equals("6")) {
 		if(l1.get(i).startsWith("6")) {
 			Count=Count+1;
 			
@@ -99,3 +99,4 @@ System.out.println(Count);
 		
 		
 }}
+*/

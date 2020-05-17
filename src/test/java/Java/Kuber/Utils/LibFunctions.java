@@ -55,7 +55,7 @@ import com.codoid.products.fillo.Recordset;
 import Maven_kuber.ScriptsDriver;
 
 public class LibFunctions {
-	static WebDriver driver;
+	public static WebDriver driver;
 	public static Properties pointerdata = new Properties();
 	public static Properties Configdata = new Properties();
 	public static ThreadLocal<String> browser = new ThreadLocal<String>();
@@ -67,6 +67,10 @@ public class LibFunctions {
 	public static SoftAssert sasset=new SoftAssert();
 	static WebDriverWait wait;
 	public static LinkedHashSet<String> classLevelTextResults=new LinkedHashSet<String>();
+	
+	public static WebDriver getdriver() {
+		return driver;
+	}
 
 	@BeforeSuite
 	public static void suiteStart() throws Exception {
