@@ -1,8 +1,16 @@
 package com.RestAPI;
 
+import java.io.FileReader;
 import java.util.Map;
-
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.documentContext;
 import org.apache.http.client.methods.RequestBuilder;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.spi.json.JacksonJsonNodeJsonProvider;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import io.restassured.RestAssured;
 import io.restassured.authentication.PreemptiveBasicAuthScheme;
@@ -89,6 +97,29 @@ public class ApiFunction {
 		}
 
 
+	}
+	public void setValueinJsonPayload(String PayloadName,Map<String,String>param) {
+		try {	
+			JSONParser parser= new JSONParser();
+			
+			Object obj= parser.parse(new FileReader(PayloadName));
+			JSONObject jsonobject= (JSONObject)obj;
+			
+			String fromfile= jsonobject.toJSONString();
+			//Configuration configuration=Configuration.builder().jsonProvider(new JacksonJsonNodeJsonProvider()).mappingProvider(new JacksonMappingProvider())
+			//		.build();
+			DocumentContext json=JsonPath.using(configuration).parse(fromfile);
+			Map<String,String> linkmap= new LinkedHashMap<>(param);
+			Object key=param.keySet().iterator().next();
+			linkmap.remove(key);
+			for(Map.Entry<String,String> mp :param.entrySet()){
+			
+			json.set(mp.getKey(),mp.getValue());
+		}
+			
+			String body=json.jsonString();
+		catch(Exception e) {
+			e.getLocalizedMessage();}
 	}
 
 }
