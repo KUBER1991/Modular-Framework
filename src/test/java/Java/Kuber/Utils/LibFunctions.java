@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -35,9 +34,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -52,20 +51,22 @@ import com.codoid.products.fillo.Connection;
 import com.codoid.products.fillo.Fillo;
 import com.codoid.products.fillo.Recordset;
 
-import Maven_kuber.ScriptsDriver;
+import groovy.time.Duration;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import maven.kuber.ScriptsDriver;
 
 public class LibFunctions {
 	public static WebDriver driver;
 	public static Properties pointerdata = new Properties();
 	public static Properties Configdata = new Properties();
 	public static ThreadLocal<String> browser = new ThreadLocal<String>();
-	public static String DirPath= System.getProperty("user.dir").toString().replace("//", "/");
+	public static String DirPath= System.getProperty("user.dir").replace("//", "/");
 	public static String Environment;
 	public static String UserName;
 	public static String PassWord;
 	public static  String URL;
 	public static SoftAssert sasset=new SoftAssert();
-	static WebDriverWait wait;
+	public static WebDriverWait wait;
 	public static LinkedHashSet<String> classLevelTextResults=new LinkedHashSet<String>();
 	
 	public static WebDriver getdriver() {
@@ -151,7 +152,13 @@ public class LibFunctions {
 
 	public static void elementTobeClickable(String Object) throws Exception {
 
-		wait= new WebDriverWait(driver,40);
+		WebDriverWait wait = null;
+		try {
+			wait = new WebDriverWait(driver,java.time.Duration.ofSeconds(10));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		wait.until(ExpectedConditions.elementToBeClickable(getObject(Object,5)));
 	}
 
@@ -215,7 +222,7 @@ public class LibFunctions {
 			else {
 				throw new Exception("Identifier is not found");
 			}
-			wait= new WebDriverWait(driver,TimeOut);
+			wait= new WebDriverWait(driver,java.time.Duration.ofSeconds(10));
 			element =wait.until(ExpectedConditions.visibilityOfElementLocated(searchBy));
 			return element;		
 		}
@@ -289,17 +296,21 @@ public class LibFunctions {
 		switch(browser.get().toUpperCase()) {
 
 		case "CHROME":
-			System.setProperty("webdriver.chrome.driver", DirPath+"\\Drivers//chromedriver.exe");
-			DesiredCapabilities desir= DesiredCapabilities.chrome();
-			desir.setCapability(CapabilityType.ACCEPT_SSL_CERTS,true);
-			desir.setAcceptInsecureCerts(true);
-			driver= new ChromeDriver();
+			WebDriverManager.chromedriver().setup();
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--incognito");
+			options.addArguments("start-maximized");
+			DesiredCapabilities desir= new DesiredCapabilities();
+			desir.setCapability(ChromeOptions.CAPABILITY, options);
+			options.merge(desir);
+			driver= new ChromeDriver(options);
 			Thread.sleep(2000);
+
 			break;
 		case "IE":
-			System.setProperty("webdriver.chrome.driver", DirPath+"\\Drivers//IEDriverServer.exe");
-			DesiredCapabilities desir1= DesiredCapabilities.internetExplorer();
-			desir1.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			WebDriverManager.chromedriver().setup();
+			//DesiredCapabilities desir1= DesiredCapabilities.internetExplorer();
+			//desir1.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 
 			driver= new InternetExplorerDriver();
 			Thread.sleep(2000);
@@ -318,8 +329,6 @@ public class LibFunctions {
 			break;
 		}
 		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
-		driver.manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
 		return  driver;
 	}
 
